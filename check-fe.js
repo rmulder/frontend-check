@@ -4,9 +4,9 @@ var fs = require('fs'),
   p = require('path'),
   execSync = require('child_process').execSync;
 
-var __VERSION = '0.0.4',
+var __VERSION = '0.0.5',
   VERSION = 'version: ',
-  cmd = 'eslint --rulesdir aline-custom-rules -f \'./compact-json-formatter.js\' ',
+  cmd = "eslint --rulesdir aline-custom-rules ",
   NO_DIR_MSG             = 'Directory does not exist: ',
   FILES_ERRORS_COUNT_MSG = 'Total files with errors found: ',
   FILES_SCANNED          = 'Total files scanned: ',
@@ -30,6 +30,9 @@ var args = process.argv.slice(2),
   debug = false,
   execOut;
 
+args.unshift(p.join(__dirname, 'compact-json-formatter.js'));
+args.unshift('-f');
+
 function debugLog(str) {
   debug && console.log(str);
 }
@@ -50,7 +53,7 @@ filteredArgs = filteredArgs.map(function(path) {
   return path.replace(/ /g, '\\ ');
 });
 
-if(filteredArgs.length > 0) {
+if(filteredArgs.length > 2) {
   console.log(ANALYSIS_START);
   try {
     execOut = execSync(cmd + filteredArgs.join(' '));
